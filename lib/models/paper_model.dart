@@ -6,6 +6,7 @@ class PaperModel {
   String term;
   String filePath;
   String paperId;
+  String owner;
 
   PaperModel({
     required this.year,
@@ -15,6 +16,7 @@ class PaperModel {
     required this.term,
     required this.filePath,
     required this.paperId,
+    required this.owner
   });
 
   factory PaperModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class PaperModel {
         term: json['term'],
         subject: json['subject'],
         filePath: json['file'],
-        paperId: json["_id"]);
+        paperId: json["_id"],
+        owner: json["owner"]);
   }
 }

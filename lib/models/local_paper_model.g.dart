@@ -17,30 +17,33 @@ class LocalPaperAdapter extends TypeAdapter<LocalPaper> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocalPaper(
-      year: fields[0] as int,
-      course: fields[1] as String,
-      semester: fields[2] as int,
-      subject: fields[3] as String,
-      term: fields[4] as String,
-      filePath: fields[5] as String,
+      uniqueId: fields[0] as String,
+      year: fields[1] as int,
+      course: fields[2] as String,
+      semester: fields[3] as int,
+      subject: fields[4] as String,
+      term: fields[5] as String,
+      filePath: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, LocalPaper obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.year)
+      ..write(obj.uniqueId)
       ..writeByte(1)
-      ..write(obj.course)
+      ..write(obj.year)
       ..writeByte(2)
-      ..write(obj.semester)
+      ..write(obj.course)
       ..writeByte(3)
-      ..write(obj.subject)
+      ..write(obj.semester)
       ..writeByte(4)
-      ..write(obj.term)
+      ..write(obj.subject)
       ..writeByte(5)
+      ..write(obj.term)
+      ..writeByte(6)
       ..write(obj.filePath);
   }
 

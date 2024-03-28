@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:pyq_portal/models/boxes.dart';
@@ -35,10 +37,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
         physics: BouncingScrollPhysics(),
         itemCount: boxPapers.length,
         itemBuilder: (context, index) {
-          
+          LocalPaper _model = boxPapers.get(keyList[index]);
           return PaperCard(
-            model: boxPapers.get(keyList[index]),
-            isDownloaded: true,
+            model: _model,
+            callingPage: "Downloads",
+            onTap: (){setState(() {
+              final file = File(_model.filePath);
+                      file.delete();
+                      boxPapers.delete(_model.uniqueId);
+            });},
           );
         },
       ),

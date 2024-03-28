@@ -1,5 +1,8 @@
 class ApiConstants {
-  static String baseurl = 'http://192.168.0.113:3000';
-  static String getPapers = '/papers';
+  static String baseurl = 'https://dull-gold-gharial-gown.cyclic.cloud'; //cyclic hosting service
+  static String getPapers = '/paper';
   static String downloadPaper = '/paper/download';
+  static String uploadPaper = '/paper/upload';
+  static String loginAdmin = '/admin/login';
+  static String deletePaper = '/del/';
 }
