@@ -179,13 +179,13 @@ class _UploadPaperScreenState extends State<UploadPaperScreen> {
                                       .path,
                                   paperId: "noId",
                                   owner: widget.currAdminId);
-                              upload(uploadModel).then((value) {
+                              upload(uploadModel).then((response) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                        content: Text(value
+                                        content: Text(response == true
                                             ? "Success"
-                                            : "Error occured")));
-                                if (value) {
+                                            : response["message"])));
+                                if (response == true) {
                                   _formKey.currentState!.reset();
                                 }
                               });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pyq_portal/api/api_services.dart';
 import 'package:pyq_portal/screens/admin/admin_dashboard.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'uploadpaper_screen.dart';
 
@@ -64,15 +65,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               height: MediaQuery.of(context).size.height * 0.07,
               child: ElevatedButton(
                   onPressed: () async {
-                    var response = await login(
+                    var loggedIn = await login(
                         _adminIdController.text, _passwordController.text);
-                    print(response);
-                    if (response == "Success") {
+                    if (loggedIn == true) {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AdminDashBoard(currAdminId: _adminIdController.text)));
+                          builder: (context) => AdminDashBoard(
+                              currAdminId: _adminIdController.text)));
                     } else {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(response)));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(loggedIn["message"])));
                     }
                   },
                   child: const Text(

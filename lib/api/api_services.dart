@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pyq_portal/api/api_constants.dart';
 import '../models/paper_model.dart';
 
 class ApiServices {
+  final storage = new FlutterSecureStorage();
+
   Future getPapers(
       String page, String? searchString, String? sortBy, String? owner) async {
     List<PaperModel> list;
@@ -50,8 +53,10 @@ class ApiServices {
   }
 
   Future uploadPaper(PaperModel uploadModel) async {
+    var accessToken = await storage.read(key: "accessToken");
     var url = Uri.parse(ApiConstants.baseurl + ApiConstants.uploadPaper);
     var request = await http.MultipartRequest('POST', url);
+    request.headers.addAll({"Authorization": "Bearer $accessToken"});
     request.fields.addAll({
       'year': uploadModel.year.toString(),
       'course': uploadModel.course,
@@ -61,32 +66,41 @@ class ApiServices {
       'owner': uploadModel.owner,
     });
     request.files
-        .add(await http.MultipartFile.fromPath('paper', uploadModel.filePath));
-    print(request.headers);
-    http.StreamedResponse response = await request.send();
+        .add(await http.MultipartFile.fromPath('file', uploadModel.filePath));
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    var responseJson = json.decode(response.body);
+    print(responseJson);
 
     if (response.statusCode == 200) {
-      return true;
+      return responseJson['success'];
     } else {
-      print(response.reasonPhrase);
-      return false;
+      return responseJson;
     }
   }
 
   Future login(String adminId, String password) async {
     var url = Uri.parse(ApiConstants.baseurl + ApiConstants.loginAdmin);
+    print(url);
     Map data = {
-      "adminId": adminId,
+      "name": adminId,
       "password": password,
     };
     var body = json.encode(data);
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"}, body: body);
 
+    var responseJson = json.decode(response.body);
+
     if (response.statusCode == 200) {
-      return json.decode(response.body)['message'];
+      await storage.write(
+          key: "refreshToken", value: responseJson['data']['refreshToken']);
+      await storage.write(
+          key: "accessToken", value: responseJson['data']['accessToken']);
+
+      return responseJson['success'];
     } else {
-      return "error occured";
+      return responseJson;
     }
   }
 
