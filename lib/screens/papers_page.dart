@@ -25,6 +25,7 @@ class _PapersPageState extends State<PapersPage> {
   Future<dynamic> fetchPapers(int val) async {
     // print(widget.searchString);
     // print(page);
+    print("called fetch papers");
     var result = await ApiServices().getPapers(
         val.toString(), widget.searchString, widget.sortBy, widget.owner);
     return result;
@@ -58,8 +59,8 @@ class _PapersPageState extends State<PapersPage> {
   }
 
   Future deletePaper(String paperID, String paperKey) async {
-    var result = ApiServices().deletePaper(paperID, paperKey);
-    return result;
+    var result = await ApiServices().deletePaper(paperID, paperKey);
+    return result == true;
   }
 
   @override
@@ -92,16 +93,19 @@ class _PapersPageState extends State<PapersPage> {
                             },
                             child: Text("No")),
                         ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               Navigator.of(context).pop();
-                              deletePaper(item.paperId, item.filePath);
+                              bool isDeleted = await deletePaper(
+                                  item.paperId, item.filePath);
+                              print(isDeleted);
+                              if (isDeleted) {
+                                _pagingController.refresh();
+                              }
                             },
                             child: Text("Yes"))
                       ],
                     );
-                  }).then((value) {
-                setState(() {});
-              });
+                  });
             }
           },
         );

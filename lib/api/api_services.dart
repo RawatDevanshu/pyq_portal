@@ -22,9 +22,11 @@ class ApiServices {
         "owner": owner,
       });
       var response = await http.get(url);
+      var responseJson = json.decode(response.body);
+
       if (response.statusCode == 200) {
         // print(response.body);
-        var data = json.decode(response.body);
+        var data = responseJson['data'];
         list = data.map<PaperModel>((json) {
           return PaperModel.fromJson(json);
         }).toList();
@@ -105,14 +107,18 @@ class ApiServices {
   }
 
   Future deletePaper(String paperID, String paperKey) async {
+    var accessToken = await storage.read(key: "accessToken");
     var url = Uri.parse(ApiConstants.baseurl + ApiConstants.deletePaper)
         .replace(queryParameters: {"id": paperID, "key": paperKey});
-    var response = await http.delete(url);
+    var authHeader = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
+    var response = await http.delete(url, headers: authHeader);
+    var responseJson = json.decode(response.body);
+    print(responseJson);
 
     if (response.statusCode == 200) {
-      return response.body;
+      return responseJson['success'];
     } else {
-      return "error occured";
+      return responseJson['data'];
     }
   }
 }
