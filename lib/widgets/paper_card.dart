@@ -40,6 +40,11 @@ class _PaperCardState extends State<PaperCard> {
         setState(() {});
       }
     }
+    if (widget.callingPage == "Downloads") {
+      _filePath = widget.model.filePath;
+      _downloadComplete = true;
+      setState(() {});
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: SizedBox(

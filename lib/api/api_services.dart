@@ -43,7 +43,7 @@ class ApiServices {
         .replace(queryParameters: {"name": paperPath});
     print(paperPath);
     var response = await http.get(url);
-    String fileName = response.headers.entries.last.value;
+    String fileName = paperPath;
     final dir = await getExternalStorageDirectory();
     final file = File('${dir!.path}/$fileName');
     if (!await file.exists()) {
