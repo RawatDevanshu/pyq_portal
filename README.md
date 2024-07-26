@@ -1,16 +1,21 @@
-# pyq_portal
+# **SemVault**   <img src="assets/notebook.png" height="100" align="left"/>
 
-A new Flutter project.
+**SemVault is a Flutter application that allows students to fetch and download previous exam papers, while administrators can upload and delete papers.**
 
-## Getting Started
+# **Technologies Used**
+<p align="left">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" height="60"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" height="60"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" height="60"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" height="60"/>
+</p>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+- **For Students:**
+  - Fetch previous exam papers
+  - Download papers for offline access
+  - Sort papers in various orders
+- **For Administrators:**
+  - Upload new exam papers
+  - Delete existing papers
+- Utilizes AWS S3 for efficient PDF storage
